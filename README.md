@@ -1,0 +1,1 @@
+Simulador : https://genuine-stroopwafel-b2567b.netlify.app/
