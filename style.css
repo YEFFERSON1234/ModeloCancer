@@ -1,0 +1,144 @@
+/* style.css - Paleta Formal Académica */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
+
+body { 
+    background-color: #f8f9fa; 
+    color: #212529; 
+    display: flex; 
+    justify-content: center; 
+    padding: 40px 20px; 
+}
+
+.dashboard { 
+    background-color: #ffffff; 
+    width: 100%; 
+    max-width: 1100px; 
+    border-radius: 12px; 
+    padding: 30px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+    border: 1px solid #e9ecef;
+}
+
+header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #dee2e6; padding-bottom: 20px; }
+h1 { color: #003366; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1px; }
+p { color: #6c757d; font-size: 0.95rem; }
+
+/* Sección de teoría desplegable */
+.theory-section {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.theory-section h2 {
+    color: #003366;
+    font-size: 1.3rem;
+    margin: 20px 0 10px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 5px;
+}
+
+.theory-section h3 {
+    color: #003366;
+    font-size: 1.1rem;
+    margin: 15px 0 8px;
+}
+
+.theory-section ul, .theory-section ol {
+    margin-left: 25px;
+}
+
+.theory-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background: white;
+}
+
+.theory-section th {
+    background-color: #e9ecef;
+    padding: 8px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.theory-section td {
+    padding: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.math-block {
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+/* Panel de controles */
+.panel-controls { 
+    display: flex; justify-content: space-between; 
+    background-color: #f1f3f5; padding: 20px; 
+    border-radius: 8px; margin-bottom: 25px; 
+    border-left: 5px solid #003366; 
+}
+.sliders label { display: flex; flex-direction: column; font-size: 0.9rem; color: #495057; font-weight: 600; }
+.sliders input { margin-top: 8px; cursor: pointer; accent-color: #003366; }
+
+/* Botones */
+.btn { padding: 10px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.btn.play { background-color: #003366; color: #ffffff; }
+.btn.play:hover { background-color: #004a94; }
+.btn.reset { background-color: #e9ecef; color: #495057; border: 1px solid #ced4da; }
+.btn.reset:hover { background-color: #dee2e6; }
+
+.btn-info-toggle {
+    margin-bottom: 15px;
+    padding: 8px 16px;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Visuales de los tanques */
+.panel-visuals { 
+    display: flex; justify-content: space-around; align-items: center; 
+    background-color: #ffffff; padding: 25px; border-radius: 8px; 
+    border: 1px solid #dee2e6; margin-bottom: 25px; 
+}
+.tank { 
+    width: 90px; height: 160px; background-color: #f8f9fa; 
+    border: 2px solid #adb5bd; border-radius: 4px; position: relative; overflow: hidden; 
+}
+.liquid { position: absolute; bottom: 0; width: 100%; transition: height 0.4s ease; }
+.liquid.red { background-color: #dc3545; }
+.liquid.blue { background-color: #007bff; }
+
+.tank-value { 
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+    font-weight: 700; font-size: 0.9rem; color: #343a40; background: rgba(255,255,255,0.8); 
+    padding: 2px 5px; border-radius: 3px; border: 1px solid #dee2e6;
+}
+
+.rate-badge { margin-top: 10px; font-size: 0.8rem; font-weight: 600; color: #495057; }
+
+/* Log y gráfico */
+.log-box { 
+    height: 160px; overflow-y: auto; background-color: #f8f9fa; 
+    padding: 15px; border-radius: 6px; border: 1px solid #dee2e6; font-size: 0.85rem; 
+}
+.log-entry { margin-bottom: 6px; color: #495057; border-bottom: 1px solid #e9ecef; }
+.log-entry.danger { color: #dc3545; font-weight: bold; }
+.log-entry.success { color: #28a745; font-weight: bold; }
+.log-entry.info { color: #003366; }
+
+.panel-chart { background-color: #ffffff; padding: 20px; border-radius: 8px; height: 350px; border: 1px solid #dee2e6; }
+
+/* Estados */
+.status-stable { color: #28a745; font-weight: bold; }
+.status-critical { color: #dc3545; font-weight: bold; }
+.status-remission { color: #17a2b8; font-weight: bold; }

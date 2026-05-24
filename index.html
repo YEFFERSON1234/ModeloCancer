@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo de Tratamiento del Cáncer - Infusión Adaptativa</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dinámica de Sistemas: Tratamiento del Cáncer (Infusión Adaptativa)</h1>
+            <p class="subtitle">Basado en "Introducción a la Dinámica de Sistemas Aplicada" - Donald R. Drew</p>
+        </header>
+
+        <button id="btn-info" class="btn-info-toggle">Info</button>
+
+        <section class="theory-section" id="theory-section-content" style="display: none;">
+            <h2> Modelo original (Drew)</h2>
+            <p>El modelo original simula una <strong>inyección única</strong> de organismos anticancerosos (ACO) que deben multiplicarse en el cuerpo para combatir las células cancerosas (CC). Las ecuaciones son:</p>
+            
+            <div class="math-block">
+                $$ \frac{d\,CC}{dt} = \underbrace{0.01\,CC}_{\text{Crecimiento natural}} \;-\; \underbrace{CDR\_CF \cdot CC \cdot ACO}_{\text{Muerte por tratamiento}} $$
+                $$ \frac{d\,ACO}{dt} = \underbrace{0.2\,ACO}_{\text{Reproducción}} \;-\; \underbrace{0.025\,CC \cdot ACO}_{\text{Mortalidad en combate}} $$
+            </div>
+            
+            <p>Con los valores de Drew, el entorno tumoral es muy hostil: la tasa de muerte del ACO (0.025) es 5 veces mayor que la eficacia típica (0.005). Por eso, con dosis bajas el ACO desaparece en pocos días y el cáncer crece sin control.</p>
+            
+            <h2> Mejora: Infusión adaptativa</h2>
+            <p>Para representar un <strong>tratamiento continuo</strong>, añadimos una infusión que se ajusta automáticamente a la carga tumoral:</p>
+            
+            <div class="math-block">
+                $$ \frac{d\,ACO}{dt} = 0.2\,ACO \;-\; 0.015\,CC \cdot ACO \;+\; k \cdot CC $$
+            </div>
+            
+            <p><strong>Dos cambios clave:</strong></p>
+            <ul>
+                <li><strong>Mortalidad reducida de 0.025 → 0.015</strong>. Refleja un entorno menos hostil (paciente más fuerte o tratamiento más resistente).</li>
+                <li><strong>Infusión = k × CC</strong>. Cuanto más tumor, más medicamento se administra. Esto crea un <em>bucle compensador</em>: si el cáncer crece, la infusión sube, sosteniendo al ACO y atacando al tumor.</li>
+            </ul>
+
+            <h2> Controles (deslizadores)</h2>
+            <ul>
+                <li><strong>Dosis inicial (ACO)</strong>: cantidad inicial de organismos. Valores típicos: 0.5 – 10.</li>
+                <li><strong>Eficacia (CDR_CF)</strong>: potencia del tratamiento. Determina cuánto daño hace cada ACO al cáncer. Cuanto mayor, más rápido desaparece el tumor.</li>
+                <li><strong>Factor k</strong>: intensidad de la infusión adaptativa. Con <em>k=0</em> no hay infusión y el modelo vuelve al original de Drew (generalmente fatal). Con <em>k≥0.02</em> se suele alcanzar la remisión.</li>
+            </ul>
+
+            <h2>Ejemplos de resultados</h2>
+            <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                <tr style="background:#e9ecef;"><th>Dosis</th><th>Eficacia</th><th>k</th><th>Resultado</th><th>Día remisión</th></tr>
+                <tr><td>1.0</td><td>0.005</td><td>0.02</td><td>Remisión</td><td>≈ 35</td></tr>
+                <tr><td>1.0</td><td>0.005</td><td>0.01</td><td>Muerte</td><td>—</td></tr>
+                <tr><td>2.0</td><td>0.008</td><td>0.01</td><td>Remisión</td><td>≈ 45</td></tr>
+                <tr><td>0.5</td><td>0.010</td><td>0.01</td><td>Remisión</td><td>≈ 30</td></tr>
+            </table>
+
+            <p><strong>Consejo:</strong> Comienza con los valores por defecto (k=0.02) y observa cómo el ACO se mantiene y el cáncer desaparece. Luego reduce k a 0.01 para ver el fracaso del tratamiento. ¡Explora!</p>
+        </section>
+
+        <div class="dashboard">
+            <div class="panel-controls">
+                <div class="sliders">
+                    <label>Dosis Inicial (ACO): <strong><span id="lbl-dosis">1.0</span></strong> unidades</label>
+                    <input id="input-dosis" type="range" min="0.1" max="10" step="0.1" value="1.0">
+                    
+                    <label style="margin-top: 15px;">Eficacia (CDR): <strong><span id="lbl-acocf">0.005</span></strong></label>
+                    <input id="input-acocf" type="range" min="0.001" max="0.02" step="0.001" value="0.005">
+                    
+                    <label style="margin-top: 15px;">Factor infusión adaptativa (k): <strong><span id="lbl-infusion">0.02</span></strong></label>
+                    <input id="input-infusion" type="range" min="0" max="0.1" step="0.001" value="0.02">
+                    <p style="font-size: 0.75rem; color: #565f89;">Infusión = k × CC (se adapta al tamaño del tumor)</p>
+                </div>
+                <div class="playback">
+                    <button id="btn-play" class="btn play">Ejecutar Simulación</button>
+                    <button id="btn-reset" class="btn reset">Reiniciar</button>
+                    <p id="estado-paciente" class="status-stable">ESTADO: INICIAL</p>
+                </div>
+            </div>
+
+            <div class="main-workspace">
+                <div class="panel-visuals">
+                    <div class="stock-container">
+                        <h3>Células Cancerosas</h3>
+                        <div class="tank cancer-tank">
+                            <div class="liquid red" id="liquid-cc"></div>
+                            <div class="tank-value" id="val-cc">1000</div>
+                        </div>
+                        <div class="rate-badge">CDR: <span id="val-cdr">0.00</span></div>
+                    </div>
+                    <div class="stock-container">
+                        <h3>Organismos Anticancerosos</h3>
+                        <div class="tank aco-tank">
+                            <div class="liquid blue" id="liquid-aco"></div>
+                            <div class="tank-value" id="val-aco">1.0</div>
+                        </div>
+                        <div class="rate-badge">ACODR: <span id="val-acodr">0.00</span> | Inf: <span id="val-infusion">0.0</span></div>
+                    </div>
+                </div>
+                <div style="flex: 1;">
+                    <div class="log-box" id="event-log"></div>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #565f89;">Día: <strong id="val-day">0.0</strong></p>
+                </div>
+            </div>
+            <div class="panel-chart">
+                <canvas id="graficoSimulacion"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
