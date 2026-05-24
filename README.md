@@ -11,10 +11,10 @@ Se modela la lucha entre células cancerosas (CC) y organismos anticancerosos (A
 
 ## 📊 Capturas de la simulación
 
-### Diagrama de flujo del modelo (Forrester)
+### Diagrama de flujo del modelo 
 ![Diagrama del modelo](img1.png)
 
-### Comportamiento dinámico – escenarios de remisión y muerte
+### Comportamiento dinámico 
 ![Gráfica de simulación](img2.png)
 
 ---
